@@ -21,3 +21,18 @@ let b1 = a > b;                 //비교 연산의 결과
 let b2 = b >= 0 && b <= 10;     //논리 연산의 결과
 //논리 연산자: AND(&&) OR(||) NOT(!)
 console.log("b1 = " + b1 + ", b2 = " + b2);
+
+console.log("==================================")
+//Boolean 타입 함수를 이용한 Boolean 변경
+//number
+//string: 내용이 있으면 true, 빈 문자열이면 false
+console.log(Boolean("ECMAScript"), Boolean(""));
+console.log(Boolean(2024), Boolean(0));
+
+//ShortCircuit
+console.log("==================================shortcircuit")
+console.log(true && "Test");
+console.log(false && "Test");
+
+console.log(true || "Test");
+console.log(false || "Test");
