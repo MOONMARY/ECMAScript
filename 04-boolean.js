@@ -36,3 +36,5 @@ console.log(false && "Test");
 
 console.log(true || "Test");
 console.log(false || "Test");
+
+//React의 선택적 렌더링에 많이 활용
