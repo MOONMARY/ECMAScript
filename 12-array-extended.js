@@ -82,3 +82,87 @@ function testFilter() {
     );
 }
 testFilter();
+
+function testReduce() {
+    console.log("============ reduce");
+    //가장 일반적인 Reduce -> 집계
+    console.log("원본배열: ", source);
+    //source배열의 모든 요소를 합산
+    let sum = source.reduce((acc, value, index, arr) => {
+        console.log(
+            `콜백 파라미터 (acc: ${acc}, value: ${value}, index: ${index}, arr: ${arr})`, acc + value
+        );
+        //acc: 현재까지의 집계값
+        //value: 현재값
+        //acc에다 value를 더해줘야 집계가 된다
+        return acc + value;     //다음번 콜백의 acc로 전달
+    }, 0);
+
+    console.log("합산결과: ", sum);
+}
+// testReduce();
+
+function testReduce2() {
+    console.log("------------------ Reduce 2")
+    //반복되는 모든것에는 reduce 함수를 적용할 수 있음
+    //map함수를 reduce함수로 구현
+    //모든 요소를 *2해서 새 배열 생성
+    console.log("원본배열: ", numbers);
+    let result = numbers.reduce((acc, value) => {
+        console.log(`콜백 파라미터: (acc: ${acc}, value: ${value})`);
+        acc.push(value * 2);
+        console.log(`-> ${acc}`);
+
+        return acc;
+    }, []);
+    console.log("요소 두배: ", result);
+}
+// testReduce2();
+
+
+function testReduce3() {
+    console.log("-------------------- testReduce3")
+    //reduce를 이용, filter 함수 구현
+    //numbers 배열의 요소 중 짝수만 필터링
+    console.log("원본배열: ", numbers);
+    let result = numbers.reduce((acc, value) => {
+        if (value % 2 == 0) {
+            //짝수
+            acc.push(value);
+        }
+        return acc;
+    }, []);
+    console.log("짝수배열: ", result);
+}
+// testReduce3();
+
+const data = [
+    {name: "준면", kor: 85, eng: 92, math: 88},
+    {name: "세훈", kor: 70, eng: 74, math: 95},
+    {name: "민석", kor: 91, eng: 89, math: 85},
+    {name: "백현", kor: 65, eng: 70, math: 72},
+    {name: "경수", kor: 80, eng: 90, math: 91}
+];
+//데이터 파이프라인 구축 예제
+function testDataPipeline() {
+    console.log("===================== 파이프라인");
+    console.log("원본 데이터: ", data);
+    //1단계: 데이터배열로부터 국,영,수 점수 합산해서 total변수 만들기
+    //map 함수 이용-> total 파생 변수
+    const studentsWithTotal = data.map(s => ({...s, //객체 필드 만들기. {}는 object입니다!라고 명시한거임
+        total: s.kor + s.eng + s.math
+    }));
+    console.log("map: ", studentsWithTotal);
+
+    //filter함수 이용-> total >= 240만 출력
+    const filteredStudents = studentsWithTotal.filter(s => s.total >= 240);
+    console.log("총점 240 이상: ", filteredStudents);
+
+    //sort 함수 이용 정렬 -> 총점 기준으로
+    const sortedStudents = filteredStudents.sort(
+        (a,b) => a.total - b.total
+    );
+    console.log("total순 정렬: ", sortedStudents);
+}
+
+testDataPipeline();
