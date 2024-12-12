@@ -67,20 +67,76 @@
 
         //title 속성을 변경해서 title 속성에 넣는다
         obj.setAttribute("title", "제품사진: " + title);
-        
+
         //하단의 .sub-image들의 title 속성도 변경하기
         let subs = document.getElementsByClassName("sub-image");
+
+        //sub-image가 Collection이 나오는지 찍어보기
         console.log(".sub-image: ", subs);
-        console.log(subs.__proto__);        //HTMLCollection
+        console.log(subs.__proto__);    //HTMLCollection
         //직접 접근 불가, loop 필요
 
-        for (let i = 0; i < subs.length; i++) { //subs는 단일 요소가 아니라서 개별 접근
+        for (let i = 0; i < subs.length; i++) { 
+            //subs는 단일 요소가 아니라서 개별 접근
             subs[i].setAttribute("title",
                 "제품사진:" + subs[i].getAttribute("title")
             );
         }
     }
-    testAttribute();
+    // testAttribute();
+
+    //#main-image 클릭하면 이벤트 정보 콘솔에 출력
+    document.getElementById("main-image").onclick = function(event) {
+        //이벤트리스너 콜백함수에 전달된 첫번째 인자값 -> 이벤트 정보
+        console.log(event);
+        console.log(typeof event);
+        console.log("이벤트 발생 객체: ", event.target);
+
+        alert(event.target.title);
+    }
+
+    //초기화 코드: 페이지가 모드 로드 되었을 때 초기화 이벤트 발생
+    window.addEventListener("load", function(event) {   //function(매개변수)
+        //하단의 .sub-image를 클릭하면 이미지 주소를 main-image로 옮겨주고
+        //title 속성을 main-image, h2 태그로 복사
+        let products = document.getElementsByClassName("sub-image");
+        //HTMLCollection
+        for (let i = 0; i < products.length; i++) {
+            //개별 프로덕트
+            let product = products[i];   //product의 i번째 요소
+            console.log(product);
+
+            //이벤트 부착
+            product.addEventListener("click", (event) => {
+                //이벤트 발생 객체
+                let obj = event.target;
+                //#main-image 찾기
+                let mainImage = document.getElementById("main-image");
+                mainImage.setAttribute("title",
+                    obj.getAttribute("title")
+                );
+                mainImage.setAttribute("src", obj.getAttribute("src")
+                )
+
+                //title 속성 -> h2
+                let h2 = document.querySelector("#product-info h2");
+                h2.innerText = obj.getAttribute("title");   //h2에 콘텐츠를 text로 넣는다
+                // .innerText -> 콘텐츠 변경 (text)
+                // .innerHTML -> 콘텐츠 변경 (html)
+            });
+        }
+
+        //input#keyword의 내용이 바뀌면 button#btn-search의 value 속성으로 복사
+        //document로부터 id 찾기
+        document.getElementById("keyword").addEventListener("keyup", (event) => {
+            console.log(event); //이벤트 발생
+
+            let btn = document.querySelector("#btn-search");
+            btn.innerText = event.target.value + ":검색"    //event.target.value = 입력상자
+
+        })
+    });
+
 </script>
 
 </html>
