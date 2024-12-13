@@ -6,14 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>iPhones</title>
-    <!-- jQuery CDN-->
-    <!-- <script
-    src="https://code.jquery.com/jquery-3.7.1.slim.js"
-    integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc="
-    crossorigin="anonymous"></script> -->
-    <!-- jQurey Local-->
-     <script src="../ex02-js/scripts/jquery/jquery.dev.js"></script>
+    <!-- jQuery CDN -->
+    <!-- script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script -->
+    <!-- jQuery Local -->
+    <script src="./scripts/jquery/jquery.dev.js"></script>
     <style>
+        #product-info {
+            margin: 5px;
+            border: 1px dotted red;
+        }
         #product-info img.selected {
             width: 225px;
             height: 265px;
@@ -39,9 +40,9 @@
 <body>
     <div id="product-info">
         <img id="main-image" 
-        src="images/iphone-xs.jpeg" 
-        class="selected" 
-        title="iPhones XS">
+            src="images/iphone-xs.jpeg" 
+            class="selected" 
+            title="iPhones XS">
         <h2>iPhone Xs</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
             magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
@@ -58,28 +59,66 @@
         <input type="text" id="keyword" /><button id="btn-search">검색</button>
     </div>
 </body>
-
 <script>
     function testAttributeJQ() {
-        //#main-image 가져와서
-        let obj = $("#main-image");
-        console.log("#main-image: ", obj);
-        //모든 속성을 출력
-        //jQuery 포장된 객체에 접근
+        //  #main-image을 가져와서 
+        let obj = $("#main-image"); //  Collection 반환
+        console.log("#main-image:", obj);
+
+        //  모든 속성을 출력
+        //  jQuery 포장된 객체에 접근
         console.log(obj[0].getAttributeNames());
-        //title 속성을 접두어 "선택상품:" 붙여서 다시 세팅
+
+        //  title 속성을 접두어 "선택상품:" -> 다시 설정
         let title = obj.attr("title");
-        obj.attr("title", "선택상품: " + title);
-        //.sub-image -> title 속성 변경
-        let subs = $(".subs-image");
-        //loop 수행
+        obj.attr("title", "선택상품:" + title);
+        //  .sub-image -> title 속성 변경
+
+        let subs = $(".sub-image");
+        //  Loop 수행
         for (let i = 0; i < subs.length; i++) {
-            $(subs[i]).attr("title", "선택상품:" + $(subs[i]).attr("title"));
+            // console.log(`sub${i} -> ${subs[i]}`);
+            $(subs[i]).attr("title", 
+                            "선택상품:" + $(subs[i]).attr("title"));
         }
-
-
     }
-    testAttributeJQ();
-</script>
+    // testAttributeJQ();
 
+    //#main-image를 클릭하면 이벤트 정보 콘솔에 출력
+    $("#main-image").click(function(event) {
+        console.log(event); //event 정보
+        alert(event.target.title);
+    })
+
+    //페이지 초기화
+    //window의 load 이벤트와 동일, 페이지 초기화 작업
+    $(document).ready(() => {
+        //하단의 .sub-image들의 클릭 이벤트 부착
+        let subs = $(".sub-image");
+        //요소가 여러개여도 루프를 돌리지 않아도 된다
+        subs.on("click", (event) => {
+            //이벤트 발생 객체에서
+            let obj = $(event.target);  //이벤트 발생 객체를 jquery로 포장
+            //src 속성, title 속성을 -> #main-image 로 이전
+            let mainImage = $("#main-image");
+            mainImage.attr({
+                src: obj.attr("src"),
+                title: obj.attr("title")
+            });
+            //src 속성, title 속성을 -> #product-info h2 로 이전
+            let h2 = $("#product-info h2");
+            h2.text(obj.attr("title"));
+
+            //input#keyword의 내용이 변하면
+            //-> button#btn-search의 value 속성으로 복사
+            $("#keyword").on("deyup", event => {
+                let input = event.target;   //이벤트 발생 객체
+
+                let btn = $("#btn-search");
+                btn.text(input.val() + ":검색");
+            })
+        });
+    });
+
+</script>
 </html>
