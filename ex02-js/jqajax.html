@@ -23,7 +23,9 @@
     $(document).ready(event => {
         //#btnCallSnippet에 click 이벤트 핸들러 부착
         $("#btnCallSnippet").on("click", event => {
-            alert("코드 조각을 불러옵니다");
+            success: function(response) {
+            };
+            // error: function(request, status, )
         })
     })
 </script>
