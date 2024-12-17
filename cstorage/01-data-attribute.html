@@ -51,7 +51,21 @@
     </div>
 
     <script>
-
+        //.info_btn에 모두 click 이벤트 부착
+        document.querySelectorAll(".info-btn").forEach(button => {   //forEach: 콜백
+            //click event
+            button.addEventListener("click", event => {
+                //이벤트 발생하는 클래스의 부모 div 찾기
+                const userDiv = event.target.parentElement;
+                console.log(userDiv);
+                //data- 속성 읽기
+                const userId = userDiv.getAttribute("data-user-id");
+                const username = userDiv.getAttribute("data-username");
+                const role = userDiv.getAttribute("data-role");
+                //정보표시
+                alert("User Id: " + userId + "\nUsername: " + username + "\nRole: " + role);
+            });
+        });
     </script>
 </body>
 
